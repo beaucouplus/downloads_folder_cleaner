@@ -2,6 +2,10 @@ require 'fileutils'
 require "mimemagic"
 require 'mimemagic/overlay'
 require "pp"
+require "extensions"
+
+
+
 
 class SortFiles
 
