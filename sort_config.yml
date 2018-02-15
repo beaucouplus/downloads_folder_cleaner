@@ -1,0 +1,32 @@
+---
+:media:
+- image
+- video
+- audio
+:archives:
+- ".zip"
+- ".pkg"
+- ".gz"
+- ".bz2"
+- ".dmg"
+- ".app"
+:code:
+- ".rb"
+- ".php"
+- ".html"
+- ".py"
+- ".xml"
+- ".js"
+:work:
+- ".pptx"
+- ".ppt"
+- ".doc"
+- ".docx"
+- ".xls"
+- ".xlsx"
+- ".csv"
+- ".txt"
+:read:
+- ".pdf"
+- ".mobi"
+- ".epub"

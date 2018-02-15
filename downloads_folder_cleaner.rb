@@ -2,25 +2,19 @@ require 'fileutils'
 require "mimemagic"
 require 'mimemagic/overlay'
 require "pp"
-require "extensions"
-
-
+require_relative "sorting_rules"
 
 
 class SortFiles
 
   DOWNLOADS_FOLDER = "/Users/maximesouillat/Downloads"
 
+  attr_reader :sorting_rules
+
   def initialize
-    Dir.chdir(DOWNLOADS_FOLDER)
+    # Dir.chdir(DOWNLOADS_FOLDER)
     @files = {}
-    @extensions = {
-      media: ["image","video","audio"],
-      archives: [".zip",".pkg",".gz",".bz2",".dmg",".app"],
-      code: [".rb",".php",".html",".py",".xml",".js"],
-      work: [".pptx",".ppt",".doc",".docx",".xls",".xlsx",".csv",".txt"],
-      read: [".pdf",".mobi",".epub"],
-    }
+    @sorting_rules = SortingRules.all
   end
 
   def list
@@ -79,42 +73,12 @@ class SortFiles
   end
 end
 
-class MoveFiles
 
-  def move_files
-    sorted_files = SortFiles.new.sort_files_by_extension
-    sorted_files.delete(:hidden)
-    sorted_files.delete(:folders)
-    create_folders(sorted_files)
 
-    sorted_files.each do |sorting_folder,files|
-      dest_folder = Dir.pwd + "/" + sorting_folder.to_s
-      files.each { |file| FileUtils.move(file,dest_folder) }
-    end
-  end
+pp SortFiles.new.sorting_rules
 
-  def delete_empty_folders
-    Dir.foreach(Dir.pwd) do |file|
-      extension = File.extname(file).downcase
-      if File.directory?(file) && extension == ""
-        current_dir = Dir.pwd + "/" + file
-        FileUtils.remove_dir(current_dir) if Dir.entries(current_dir) == [".", "..", ".DS_Store"]
-      end
-    end
-  end
+pp SortFiles.new.list
 
-  private
-
-  def create_folders(sorted_files)
-    sorted_files.keys.each do |folder|
-      folder = folder.to_s
-      download_files = SortFiles.new.sort_files_by_extension
-      FileUtils.mkdir folder unless download_files[:folders].include?(folder)
-    end
-  end
-
-end
-
-a = MoveFiles.new
-a.move_files
-a.delete_empty_folders
+# a = MoveFiles.new
+# a.move_files
+# a.delete_empty_folders
