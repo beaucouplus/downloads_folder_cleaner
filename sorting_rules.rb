@@ -2,15 +2,17 @@ require 'Psych'
 
 class SortingRules
 
+  CONFIG_FILE = File.expand_path("sort_config.yml").freeze
+
   def initialize
   end
 
   def self.all
-    Psych.load_file sort_config
+    Psych.load_file CONFIG_FILE
   end
 
   def set_to_default
-    File.open(sort_config, "w") {|out| out.puts default.to_yaml }
+    File.open(CONFIG_FILE, "w") {|out| out.puts default.to_yaml }
   end
 
   private
@@ -23,10 +25,5 @@ class SortingRules
       read: [".pdf",".mobi",".epub"]
     }
   end
-
-  def self.sort_config
-    "sort_config.yml"
-  end
-
 
 end
