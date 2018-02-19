@@ -11,6 +11,11 @@ class SortingRules
     Psych.load_file CONFIG_FILE
   end
 
+  def self.find(extension)
+    self.all.find { |key,values| values.include?(extension) }
+  end
+
+
   def set_to_default
     File.open(CONFIG_FILE, "w") {|out| out.puts default.to_yaml }
   end

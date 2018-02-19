@@ -30,3 +30,5 @@
 - ".pdf"
 - ".mobi"
 - ".epub"
+:video:
+  - ".srt"

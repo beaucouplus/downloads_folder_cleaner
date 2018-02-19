@@ -8,7 +8,7 @@ class ListFiles
   end
 
   def sort_by_type
-    list.each_with_object({}) { |(file,v),categories| FileSorter.new(categories,file).sort }
+    list.each_with_object({}) { |(file,v),sorted_files| FileSorter.new(sorted_files,file).sort }
   end
 
   def count_extensions
