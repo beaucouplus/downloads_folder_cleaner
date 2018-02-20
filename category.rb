@@ -1,4 +1,4 @@
-class Rule
+class Category
 
   attr_reader :extension, :file
 
@@ -11,8 +11,12 @@ class Rule
     return custom_rule if SortingRules.find(extension)
     return :folder if folder?
     return :hidden if file[0] == "."
-    return :unknown unless mediatype?
-    mediatype
+    return mediatype if has_mime?
+    :unknown
+  end
+
+  def folder?
+    File.directory?(@file) && extension.empty?
   end
 
   private
@@ -20,12 +24,8 @@ class Rule
     File.extname(@file).downcase
   end
 
-  def folder?
-    File.directory?(@file) && extension.empty?
-  end
-
-  def mediatype?
-    true if SortingRules.find(mediatype)
+  def has_mime?
+    MimeMagic.by_extension(extension)
   end
 
   def mediatype

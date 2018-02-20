@@ -1,4 +1,4 @@
-class FileSorter
+class SortFile
 
   attr_reader :file
   attr_accessor :sorted_files
@@ -8,8 +8,8 @@ class FileSorter
     @file = file
   end
 
-  def sort
-    category = Rule.new(file).find
+  def perform
+    category = Category.new(file).find
     sort_file_in(category)
   end
 

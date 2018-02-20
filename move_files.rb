@@ -1,35 +1,36 @@
 class MoveFiles
 
-  def move_files
-    sorted_files = SortFiles.new.sort_files_by_extension
-    sorted_files.delete(:hidden)
-    sorted_files.delete(:folders)
-    create_folders(sorted_files)
+  attr_accessor :sorted_files
 
-    sorted_files.each do |sorting_folder,files|
-      dest_folder = Dir.pwd + "/" + sorting_folder.to_s
-      files.each { |file| FileUtils.move(file,dest_folder) }
-    end
+  def initialize(sorted_files = Folder.new.sort)
+    @sorted_files = sorted_files
+  end
+
+  def perform
+    create_folders
+    # move_files
   end
 
   def delete_empty_folders
-    Dir.foreach(Dir.pwd) do |file|
-      extension = File.extname(file).downcase
-      if File.directory?(file) && extension == ""
-        current_dir = Dir.pwd + "/" + file
-        FileUtils.remove_dir(current_dir) if Dir.entries(current_dir) == [".", "..", ".DS_Store"]
-      end
+    Folder.new.subfolders do |folder|
+      Folder.new(folder).delete
     end
   end
 
   private
 
-  def create_folders(sorted_files)
+  def create_folders
     sorted_files.keys.each do |folder|
-      folder = folder.to_s
-      download_files = SortFiles.new.sort_files_by_extension
-      FileUtils.mkdir folder unless download_files[:folders].include?(folder)
+      next if folder == :folder || folder == :hidden
+      Folder.new(folder).create
     end
   end
 
+  def move_files
+    sorted_files.each do |folder,files|
+      next if folder == :folder || folder == :hidden
+      dest_folder = Dir.pwd + "/" + folder.to_s
+      files.each { |file| FileUtils.move(file,dest_folder) }
+    end
+  end
 end
