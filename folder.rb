@@ -27,7 +27,7 @@ class Folder
     Dir.entries(folder)
   end
 
-  def delete_empty_children_folders
+  def delete_empty_children
     subfolders.each do |folder|
       current_dir = current(folder)
       FileUtils.remove_dir(current_dir) if empty?(current_dir)
