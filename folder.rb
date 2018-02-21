@@ -2,9 +2,8 @@ class Folder
 
   attr_reader :folder
 
-  def initialize(folder = "/Users/maximesouillat/Downloads")
-    folder = folder.to_s
-    @folder = folder
+  def initialize(folder = Path.new("Downloads").get)
+    @folder = folder.to_s
   end
 
   def create
